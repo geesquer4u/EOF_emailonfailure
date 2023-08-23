@@ -1,10 +1,10 @@
-#get-content E:\*\*\*\DEV\log.txt -Tail 1000 | set-content C:\path\Email_on_failure\local.txt
+#get-content E:\*\*\*\DEV\log.txt -Tail 1000 | set-content C:\path\local.txt
 
-#Daily at 12:00 AM & PM, we need to run: Clear-Content "C:\path\Email_on_failure\cache.txt" to make it empty
+#Daily at 12:00 AM & PM, we need to run: Clear-Content "C:\path\cache.txt" to make it empty
 
-$local = 'C:\path\Email_on_failure\local.txt'
-$body = 'C:\path\Email_on_failure\body.txt'
-$errorlist = 'C:\path\Email_on_failure\errorlist.txt'
+$local = 'C:\path\local.txt'
+$body = 'C:\path\body.txt'
+$errorlist = 'C:\path\errorlist.txt'
 
 Clear-Content "$body"
 Clear-Content "$errorlist"
@@ -19,7 +19,7 @@ Foreach($A in Get-Content $local)
 	}
 }
 
-$diff = Get-Content $body | Where-Object {$_ -notin (Get-Content C:\path\Email_on_failure\cache.txt)}
+$diff = Get-Content $body | Where-Object {$_ -notin (Get-Content C:\path\cache.txt)}
 
 $diff | Out-File $errorlist
 
@@ -38,7 +38,7 @@ Foreach($B in Get-Content $errorlist)
     If($B -match "error|invalid|failed|disconnect|Stopped")
 	{
     Write-Host "B"
-    Add-Content C:\path\Email_on_failure\cache.txt "$B"
+    Add-Content C:\path\cache.txt "$B"
 	}
 }
 }
